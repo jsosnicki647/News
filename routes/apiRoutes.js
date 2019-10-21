@@ -25,14 +25,12 @@ module.exports = function (app) {
             .catch(err => res.json(err))
     })
 
-    app.get("/articles", (req, res) => {
+    app.get("/scrape", (req, res) => {
+
         let results = []
-        db.Article.remove({})
-        .then(
-            axios.get("https://www.npr.org/sections/news/")
+        axios.get("https://www.npr.org/sections/news/")
             .then((response) => {
                 let $ = cheerio.load(response.data)
-
                 $("article.item").each((i, element) => {
                     let teaser = $(element).find("p.teaser").children("a").text().split("• ")[1]
                     let title = $(element).find("h2.title").children("a").text()
@@ -48,16 +46,20 @@ module.exports = function (app) {
                         if (err) {
                             console.log(err)
                         } else {
-                            console.log("INSERTED: " + inserted)
+                            console.log("INSERTED: " + i + inserted)
                             results.push(newArticle)
                         }
                     })
                 })
-                res.json(results)
+                res.status(200).end()
             })
-        )
     })
 
+    app.get("/articles", (req, res) => {
+        db.Article.find({})
+            .then(dbArticle => res.render(dbArticle))
+
+    })
 
     app.get("/populated", (req, res) => {
         db.Article.find({})
@@ -68,8 +70,15 @@ module.exports = function (app) {
 
 
     app.get("/", (req, res) => {
-
+        // db.Article.deleteMany({})
         db.Article.find({})
-            .then(dbArticle => res.json(dbArticle))
+            .then(dbArticle => {
+                const hbsObject = {
+                    articles: dbArticle
+                }
+                console.log(hbsObject)
+                res.render("index", hbsObject)
+            })
+        // res.status(200).end()
     })
 }
