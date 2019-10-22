@@ -8,7 +8,9 @@ $(document).ready(() => {
 
     })
 
-   $("btn.note").on("click", () => {
+   $("btn.note").on("click", (e) => {
        $("#note-modal").modal("toggle")
+       const title = $(e.target).data("title")
+       $("#modal-article-title").text(title)
    })
 })
