@@ -55,10 +55,20 @@ module.exports = function (app) {
             })
     })
 
-    app.get("/articles", (req, res) => {
-        db.Article.find({})
-            .then(dbArticle => res.render(dbArticle))
+    // app.get("/articles", (req, res) => {
+    //     db.Article.find({})
+    //         .then(dbArticle => res.render(dbArticle))
 
+    // })
+
+    app.get("/saved", (req, res) => {
+        db.Article.find({saved: true})
+            .then(dbArticle => {
+                const hbsObject = {
+                    articles: dbArticle
+                }
+                res.render("index", hbsObject)
+            })
     })
 
     app.get("/populated", (req, res) => {
