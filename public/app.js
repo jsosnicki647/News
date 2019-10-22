@@ -7,4 +7,8 @@ $(document).ready(() => {
             .then(() => {console.log("SAVED", id)})
 
     })
+
+   $("btn.note").on("click", () => {
+       $("#note-modal").modal("toggle")
+   })
 })
