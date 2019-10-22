@@ -76,9 +76,20 @@ module.exports = function (app) {
                 const hbsObject = {
                     articles: dbArticle
                 }
-                console.log(hbsObject)
                 res.render("index", hbsObject)
             })
         // res.status(200).end()
+    })
+
+    app.put("/save/:id", (req, res) => {
+        db.Article.updateOne({_id: req.params.id}, {$set: {saved: true}}, (err, updated) => {
+            if (err) {
+                console.log(err)
+            }
+            else{
+                console.log(updated)
+                res.status(200).end()
+            }
+        })
     })
 }
