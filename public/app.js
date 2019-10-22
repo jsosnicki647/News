@@ -11,6 +11,13 @@ $(document).ready(() => {
    $("btn.note").on("click", (e) => {
        $("#note-modal").modal("toggle")
        const title = $(e.target).data("title")
+       const id = $(e.target).data("id")
+       console.log(id)
        $("#modal-article-title").text(title)
+       $("#save-note").data("id", id) 
+       console.log($("#save-note").data("id"))
    })
+
+//    $("#save-note").on("click", (e) => {
+//        const id = $(e.target).data(
 })
