@@ -15,7 +15,6 @@ $(document).ready(() => {
        console.log(id)
        $("#modal-article-title").text(title)
        $("#save-note").data("id", id) 
-       console.log($("#save-note").data("id"))
    })
 
 //    $("#save-note").on("click", (e) => {
