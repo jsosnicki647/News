@@ -53,13 +53,6 @@ module.exports = function (app) {
     })
 
 
-    // app.get("/articles", (req, res) => {
-    //     db.Article.find({})
-    //         .then(dbArticle => res.render(dbArticle))
-
-    // })
-
-
     app.get("/saved-articles", (req, res) => {
         db.Article.find({})
             .then(dbArticle => {
@@ -107,25 +100,35 @@ module.exports = function (app) {
     })
 
 
-
     app.get("/", (req, res) => {
         res.render("index", {})
     })
 
     app.post("/save", (req, res) => {
-        const newArticle = {
-            title: req.body.title,
-            teaser: req.body.teaser,
-            link: req.body.link
-        }
 
-        db.Article.create(newArticle, (err, inserted) => {
-            if (err) {
-                console.log(err)
+        db.Article.find({
+            title: req.body.title
+        }, (err, found) => {
+            if (found.length > 0) {
+                res.send("already saved")
             } else {
-                console.log("INSERTED: " + inserted)
-                res.status(200).end()
+                const newArticle = {
+                    title: req.body.title,
+                    teaser: req.body.teaser,
+                    link: req.body.link
+                }
+
+                db.Article.create(newArticle, (err, inserted) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.log("INSERTED: " + inserted)
+                        res.status(200).end()
+                    }
+                })
             }
+
         })
+
     })
 }

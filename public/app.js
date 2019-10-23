@@ -10,7 +10,7 @@ $(document).ready(() => {
             link: link
         }
         console.log(data)
-        $.post("/save", data, () => console.log("saved"))
+        $.post("/save", data, (a) => console.log(a))
 
     })
 
