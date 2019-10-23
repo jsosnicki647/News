@@ -26,15 +26,28 @@ $(document).ready(() => {
             url: "/populated/" + id,
             method: "GET"
         }).then((notes) => {
-            console.log("NOTES: " + notes[0].note)
             notes.forEach(element => {
+                const newNoteDiv = $("<div>")
                 const p = $("<span>")
                 const del = $("<btn class='delete-note btn btn-danger'>")
+                $(del).attr("data-id", element._id)
                 del.text("Delete")
                 p.text(element.time + ": " + element.note)
 
-                $("#notes").append(del).append(p).append($("<br>"))
+                $(newNoteDiv).append(del).append(p).append($("<br>"))
+                $("#notes").append(newNoteDiv)
 
+                $(".delete-note").on("click", (e) => {
+                    const id = $(e.target).data("id")
+                    $.ajax({
+                        url: "/delete-note/" + id,
+                        method: "DELETE"
+                    }).then((a) => {
+                        console.log("DFE " + $(e.target).parent())
+                        $(e.target).parent().remove()
+                        console.log(a)
+                    })
+                })
             })
         })
     })
@@ -61,17 +74,43 @@ $(document).ready(() => {
             article_id: article_id
         }
 
-        $.post("/submit", data, () => console.log("saved"))
+        $.post("/submit", data, (a) => {
+            const id = a.notes[a.notes.length - 1]
+            const newNoteDiv = $("<div>")
+            const p = $("<span>")
+            const del = $("<btn class='delete-note btn btn-danger'>")
+            $(del).attr("data-id", id)
+            del.text("Delete")
+            p.text(Date.now() + ": " + note)
 
-        const p = $("<span>")
-        const del = $("<btn class='delete-note btn btn-danger'>")
-        del.text("Delete")
-        p.text(Date.now() + ": " + note)
+            $(newNoteDiv).append(del).append(p).append($("<br>"))
+            $("#notes").append(newNoteDiv)
+            $("#note-text").val("")
 
-        $("#notes").append(del).append(p).append($("<br>"))
-        $("#note-text").val("")
-
+            $(".delete-note").on("click", (e) => {
+                const id = $(e.target).data("id")
+                $.ajax({
+                    url: "/delete-note/" + id,
+                    method: "DELETE"
+                }).then((a) => {
+                    console.log("DFE " + $(e.target).parent())
+                    $(e.target).parent().remove()
+                    console.log(a)
+                })
+            })
+        })
     })
+
+
+
+    $(".delete-article").on("click", (e) => {
+        const id = $(e.target).data("id")
+        $.ajax({
+            url: "/delete-article/" + id,
+            method: "DELETE"
+        }).then(() => window.location.href = window.location.origin + "/saved-articles")
+    })
+
 
     $("#modal-close").on("click", () => {
         $("#note-text").val("")

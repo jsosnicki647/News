@@ -71,13 +71,41 @@ module.exports = function (app) {
     })
 
     app.get("/populated/:id", (req, res) => {
-        console.log("REQ ID: " + req.params.id)
-        console.log("MONGOID: " + mongojs.ObjectId(req.params.id))
-        db.Article.find({_id: mongojs.ObjectId(req.params.id)})
+        db.Article.find({
+                _id: mongojs.ObjectId(req.params.id)
+            })
             .populate("notes")
             .then(dbArticle => res.json(dbArticle[0].notes))
             .catch(err => res.json(err))
     })
+
+    app.delete("/delete-note/:id", (req, res) => {
+        console.log("ID: " + req.params.id)
+        db.Note.remove({
+            _id: mongojs.ObjectId(req.params.id)
+        }, (err, deleted) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(deleted)
+                res.status(200).end()
+            }
+        })
+    })
+
+    app.delete("/delete-article/:id", (req, res) => {
+        db.Article.remove({
+            _id: mongojs.ObjectId(req.params.id)
+        }, (err, deleted) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(deleted)
+                res.status(200).end()
+            }
+        })
+    })
+
 
 
     app.get("/", (req, res) => {
