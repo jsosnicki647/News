@@ -8,7 +8,6 @@ const PORT = 3000;
 const MONGODB_URL = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines"
 const app = express();
 
-require("./routes/apiRoutes")(app)
 // Configure middleware
 
 // Use morgan logger for logging requests
@@ -19,6 +18,7 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
+require("./routes/apiRoutes")(app)
 // Connect to the Mongo DB
 mongoose.connect(MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true })
 

@@ -5,7 +5,6 @@ const ArticleSchema = new Schema({
   teaser: {type: String},
   title: {type: String},
   link: {type:String},
-  saved: {type:Boolean, default: false},
   notes: [{type: Schema.Types.ObjectId, ref: "Note"}]
 })
 
