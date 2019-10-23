@@ -1,6 +1,7 @@
 const axios = require("axios")
 const cheerio = require("cheerio")
 const db = require("../models")
+const mongojs = require("mongojs")
 
 module.exports = function (app) {
 
@@ -65,14 +66,16 @@ module.exports = function (app) {
                 const hbsObject = {
                     articles: dbArticle
                 }
-                res.render("articles", hbsObject)
+                res.render("saved", hbsObject)
             })
     })
 
-    app.get("/populated", (req, res) => {
-        db.Article.find({})
+    app.get("/populated/:id", (req, res) => {
+        console.log("REQ ID: " + req.params.id)
+        console.log("MONGOID: " + mongojs.ObjectId(req.params.id))
+        db.Article.find({_id: mongojs.ObjectId(req.params.id)})
             .populate("notes")
-            .then(dbArticle => res.json(dbArticle))
+            .then(dbArticle => res.json(dbArticle[0].notes))
             .catch(err => res.json(err))
     })
 
@@ -82,7 +85,6 @@ module.exports = function (app) {
     })
 
     app.post("/save", (req, res) => {
-        console.log("REQ: " + req.body.title)
         const newArticle = {
             title: req.body.title,
             teaser: req.body.teaser,
