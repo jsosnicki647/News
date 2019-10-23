@@ -25,8 +25,8 @@ module.exports = function (app) {
             .catch(err => res.json(err))
     })
 
-    app.get("/scrape", (req, res) => {
-
+    app.get("/", (req, res) => {
+        db.Article.remove({}).then(() => {
         let results = []
         axios.get("https://www.npr.org/sections/news/")
             .then((response) => {
@@ -42,18 +42,23 @@ module.exports = function (app) {
                         link: link
                     }
 
+                    results.push(newArticle)
                     db.Article.create(newArticle, (err, inserted) => {
                         if (err) {
                             console.log(err)
                         } else {
                             console.log("INSERTED: " + i + inserted)
-                            results.push(newArticle)
                         }
                     })
                 })
-                res.status(200).end()
+                 const hbsObject = {
+                    articles: results
+                }
+                res.render("index", hbsObject)
             })
+        })
     })
+
 
     // app.get("/articles", (req, res) => {
     //     db.Article.find({})
@@ -63,7 +68,9 @@ module.exports = function (app) {
 
 
     app.get("/saved", (req, res) => {
-        db.Article.find({saved: true})
+        db.Article.find({
+                saved: true
+            })
             .then(dbArticle => {
                 const hbsObject = {
                     articles: dbArticle
@@ -80,24 +87,29 @@ module.exports = function (app) {
     })
 
 
-    app.get("/", (req, res) => {
-        // db.Article.deleteMany({})
-        db.Article.find({})
-            .then(dbArticle => {
-                const hbsObject = {
-                    articles: dbArticle
-                }
-                res.render("index", hbsObject)
-            })
-        // res.status(200).end()
-    })
+    // app.get("/", (req, res) => {
+    //     db.Article.deleteMany({})
+    //     db.Article.find({})
+    //         .then(dbArticle => {
+    //             const hbsObject = {
+    //                 articles: dbArticle
+    //             }
+    //             res.render("index", hbsObject)
+    //         })
+    //     res.status(200).end()
+    // })
 
     app.put("/save/:id", (req, res) => {
-        db.Article.updateOne({_id: req.params.id}, {$set: {saved: true}}, (err, updated) => {
+        db.Article.updateOne({
+            _id: req.params.id
+        }, {
+            $set: {
+                saved: true
+            }
+        }, (err, updated) => {
             if (err) {
                 console.log(err)
-            }
-            else{
+            } else {
                 console.log(updated)
                 res.status(200).end()
             }
