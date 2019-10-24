@@ -11,6 +11,9 @@ $(document).ready(() => {
         }
         console.log(data)
         $.post("/save", data, (a) => console.log(a))
+        $(e.target).removeClass("btn-danger")
+        $(e.target).addClass("btn-secondary")
+        $(e.target).text("saved")
 
     })
 
@@ -75,14 +78,15 @@ $(document).ready(() => {
         }
 
         $.post("/submit", data, (a) => {
-            const id = a.notes[a.notes.length - 1]
+            console.log(a)
+            const time = a.notes[a.notes.length-1].time
+            const id = a.notes[a.notes.length - 1]._id
             const newNoteDiv = $("<div>")
             const p = $("<span>")
             const del = $("<btn class='delete-note btn btn-danger'>")
             $(del).attr("data-id", id)
             del.text("Delete")
-            p.text(Date.now() + ": " + note)
-
+            p.text(time + ": " + note)
             $(newNoteDiv).append(del).append(p).append($("<br>"))
             $("#notes").append(newNoteDiv)
             $("#note-text").val("")
@@ -92,10 +96,8 @@ $(document).ready(() => {
                 $.ajax({
                     url: "/delete-note/" + id,
                     method: "DELETE"
-                }).then((a) => {
-                    console.log("DFE " + $(e.target).parent())
+                }).then(() => {
                     $(e.target).parent().remove()
-                    console.log(a)
                 })
             })
         })

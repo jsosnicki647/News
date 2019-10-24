@@ -1,0 +1,24 @@
+.navbar{
+    height: 5em;
+}
+
+.jumbotron{
+    overflow: auto;
+    color: floralwhite;
+    background-color: darkslateblue;
+}
+
+#btn-headlines{
+    margin-right: 1em;
+}
+
+body{
+    background-color: cadetblue;
+}
+
+
+@media only screen and (max-width: 328px) {
+  .jumbo-title {
+    font-size: 3.15em;
+  }
+}

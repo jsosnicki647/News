@@ -2,6 +2,8 @@ const axios = require("axios")
 const cheerio = require("cheerio")
 const db = require("../models")
 const mongojs = require("mongojs")
+const moment = require("moment")
+const m = moment()
 
 module.exports = function (app) {
 
@@ -12,15 +14,14 @@ module.exports = function (app) {
             })
             .then(dbNote => {
                 console.log(dbNote._id)
-                return db.Article.findOneAndUpdate({
-                    _id: req.body.article_id
+                return db.Article.findOneAndUpdate({_id: req.body.article_id
                 }, {
                     $push: {
                         notes: dbNote._id
                     }
                 }, {
                     new: true
-                })
+                }).populate("notes")
             })
             .then(dbArticle => res.json(dbArticle))
             .catch(err => res.json(err))
@@ -127,8 +128,6 @@ module.exports = function (app) {
                     }
                 })
             }
-
         })
-
     })
 }
