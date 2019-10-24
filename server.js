@@ -20,7 +20,7 @@ app.use(express.static("public"));
 
 require("./routes/apiRoutes")(app)
 // Connect to the Mongo DB
-mongoose.connect(MONGODB_URL,{ useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MONGODB_URI,{ useNewUrlParser: true, useUnifiedTopology: true })
 
 // Handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
