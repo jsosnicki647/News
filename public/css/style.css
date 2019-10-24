@@ -1,5 +1,6 @@
 .navbar{
     height: 5em;
+    width: 100%;
 }
 
 .jumbotron{
@@ -8,9 +9,19 @@
     background-color: darkslateblue;
 }
 
+
+.card, .card-body{
+    width: 80rem !important;
+}
+
+.card{
+    margin-top: 1em;
+}
+
 #btn-headlines{
     margin-right: 1em;
 }
+
 
 body{
     background-color: cadetblue;

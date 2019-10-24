@@ -1,15 +1,14 @@
 
-{{#each articles}}
-<div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">{{title}}</h5>
-    <p class="card-text">{{teaser}}</p>
-    <a href={{link}} target="_blank" class="btn btn-primary">Read Article</a>
-    <btn class="btn btn-danger save" data-title="{{title}}" data-teaser="{{teaser}}" data-link={{link}}>Save</btn>
-    
-  </div>
-</div>
-{{/each}}
+    {{#each articles}}
+        <div class="card mx-auto" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
+            <p class="card-text">{{teaser}}</p>
+            <a href={{link}} target="_blank" class="btn btn-primary">Read Article</a>
+            <btn class="btn btn-danger save" data-title="{{title}}" data-teaser="{{teaser}}" data-link={{link}}>Save</btn>
+          </div>
+        </div>
+    {{/each}}
 
 
 

@@ -9,11 +9,15 @@ $(document).ready(() => {
             teaser: teaser,
             link: link
         }
-        console.log(data)
-        $.post("/save", data, (a) => console.log(a))
-        $(e.target).removeClass("btn-danger")
-        $(e.target).addClass("btn-secondary")
-        $(e.target).text("saved")
+        $.post("/save", data, (a) => {
+            if (a == "already saved") {
+                $("#already-saved").modal("toggle")
+            } else {
+                $(e.target).removeClass("btn-danger")
+                $(e.target).addClass("btn-secondary")
+                $(e.target).text("saved")
+            }
+        })
 
     })
 
@@ -79,7 +83,7 @@ $(document).ready(() => {
 
         $.post("/submit", data, (a) => {
             console.log(a)
-            const time = a.notes[a.notes.length-1].time
+            const time = a.notes[a.notes.length - 1].time
             const id = a.notes[a.notes.length - 1]._id
             const newNoteDiv = $("<div>")
             const p = $("<span>")
