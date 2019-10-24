@@ -18,6 +18,12 @@
     margin-top: 1em;
 }
 
+.delete-note{
+    margin: 1em;
+    padding: 0;
+    overflow-wrap: break-word;
+}
+
 #btn-headlines{
     margin-right: 1em;
 }

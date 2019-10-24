@@ -3,21 +3,23 @@ const cheerio = require("cheerio")
 const db = require("../models")
 const mongojs = require("mongojs")
 const moment = require("moment")
-const m = moment()
 
 module.exports = function (app) {
 
     app.post("/submit", (req, res) => {
         console.log(req.body)
         db.Note.create({
-                note: req.body.note
+                note: req.body.note,
+                time: moment().format('LLLL')
             })
             .then(dbNote => {
                 console.log(dbNote._id)
+                console.log(moment().format('LLLL'))
                 return db.Article.findOneAndUpdate({_id: req.body.article_id
                 }, {
                     $push: {
-                        notes: dbNote._id
+                        notes: dbNote._id,
+                        time: moment().format('LLLL')
                     }
                 }, {
                     new: true

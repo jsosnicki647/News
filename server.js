@@ -1,8 +1,10 @@
 const express = require("express")
 const logger = require("morgan")
 const mongoose = require("mongoose")
-var Handlebars = require('handlebars');
+const Handlebars = require('handlebars');
 const exphbs = require("express-handlebars");
+const moment = require("moment")
+console.log(moment())
 
 const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines"

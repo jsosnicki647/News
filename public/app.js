@@ -35,26 +35,18 @@ $(document).ready(() => {
         }).then((notes) => {
             notes.forEach(element => {
                 const newNoteDiv = $("<div>")
-                const p = $("<span>")
+                const timeSpan = $("<span>")
+                const noteP = $("<p>")
                 const del = $("<btn class='delete-note btn btn-danger'>")
                 $(del).attr("data-id", element._id)
                 del.text("Delete")
-                p.text(element.time + ": " + element.note)
+                timeSpan.text(element.time + ": ")
+                noteP.text(element.note)
 
-                $(newNoteDiv).append(del).append(p).append($("<br>"))
-                $("#notes").append(newNoteDiv)
+                $(newNoteDiv).append(del).append(timeSpan).append(noteP).append($("<br>"))
+                $("#notes").prepend(newNoteDiv)
 
-                $(".delete-note").on("click", (e) => {
-                    const id = $(e.target).data("id")
-                    $.ajax({
-                        url: "/delete-note/" + id,
-                        method: "DELETE"
-                    }).then((a) => {
-                        console.log("DFE " + $(e.target).parent())
-                        $(e.target).parent().remove()
-                        console.log(a)
-                    })
-                })
+                addOnClickToDelete()
             })
         })
     })
@@ -86,27 +78,33 @@ $(document).ready(() => {
             const time = a.notes[a.notes.length - 1].time
             const id = a.notes[a.notes.length - 1]._id
             const newNoteDiv = $("<div>")
-            const p = $("<span>")
+            const timeSpan = $("<span>")
+            const noteP = $("<p>")
             const del = $("<btn class='delete-note btn btn-danger'>")
             $(del).attr("data-id", id)
             del.text("Delete")
-            p.text(time + ": " + note)
-            $(newNoteDiv).append(del).append(p).append($("<br>"))
-            $("#notes").append(newNoteDiv)
+            timeSpan.text(time + ": ")
+            noteP.text(note)
+            $(newNoteDiv).append(del).append(timeSpan).append(noteP).append($("<br>"))
+            $("#notes").prepend(newNoteDiv)
             $("#note-text").val("")
 
-            $(".delete-note").on("click", (e) => {
-                const id = $(e.target).data("id")
-                $.ajax({
-                    url: "/delete-note/" + id,
-                    method: "DELETE"
-                }).then(() => {
-                    $(e.target).parent().remove()
-                })
-            })
+            addOnClickToDelete()
         })
     })
 
+    const addOnClickToDelete = () => {
+
+        $(".delete-note").on("click", (e) => {
+            const id = $(e.target).data("id")
+            $.ajax({
+                url: "/delete-note/" + id,
+                method: "DELETE"
+            }).then(() => {
+                $(e.target).parent().remove()
+            })
+        })
+    }
 
 
     $(".delete-article").on("click", (e) => {
